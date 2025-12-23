@@ -10,10 +10,10 @@ class Genero {
      * @return Genero[] Es un array de objetos géneros. 
      */
     public static function getTodosLosGeneros():array {
-        $conexion = conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "SELECT * FROM generos";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_CLASS, self::class);
         $PDOStatement->execute();
 
@@ -28,10 +28,10 @@ class Genero {
      * @return ?Genero Retorna un objeto género o null, si el id no se encuentra. 
      */
     public static function getGeneroPorId(mixed $id): ?Genero {
-        $conexion = conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "SELECT * FROM generos WHERE id = ?";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_CLASS, self::class);
         $PDOStatement->execute([$id]);
 
@@ -50,14 +50,14 @@ class Genero {
      */
     public static function getGenerosPorId(?string $ids): ?array {
         if($ids) {
-            $conexion = conexion::getConexion();
+            $Conexion = Conexion::getConexion();
 
             $idsArr = explode(",", $ids);
             $placeholders = implode(',', array_fill(0, count($idsArr), '?'));
 
             $query = "SELECT * FROM generos WHERE id IN($placeholders)";
 
-            $PDOStatement = $conexion->prepare($query);
+            $PDOStatement = $Conexion->prepare($query);
             $PDOStatement->setFetchMode(PDO::FETCH_CLASS, self::class);
             $PDOStatement->execute($idsArr);
 
@@ -75,10 +75,10 @@ class Genero {
      * @param string $historia Es la historia del género.
      */
     public static function instert(string $nombre_genero, string $historia) {
-        $conexion = conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "INSERT INTO generos (nombre_genero, historia) VALUES (:nombre_genero, :historia)";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->execute([
             "nombre_genero" => $nombre_genero,
             "historia" => $historia
@@ -92,10 +92,10 @@ class Genero {
      * @param string $historia Es la historia del género.
      */
     public function edit(string $nombre_genero, string $historia) {
-        $conexion = conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "UPDATE generos SET nombre_genero = :nombre_genero, historia = :historia WHERE id = :id";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->execute([
             "nombre_genero" => $nombre_genero,
             "historia" => $historia,
@@ -107,10 +107,10 @@ class Genero {
      * Función que elimina un género de la BBDD dependiendo su ID.
      */
     public function delete() {
-        $conexion = conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "DELETE FROM generos WHERE id = ?";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->execute([$this->id]);
     }
 

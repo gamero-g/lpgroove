@@ -9,22 +9,22 @@ class Checkout {
      * @param array $detalles Es el array con los productos incluidos en la compra.
      */
     public static function insertCompra(array $datosCompra, array $detalles) {
-        $conexion = Conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "INSERT INTO compras VALUES (NULL, :usuarioId, :fecha, :importe)";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->execute([
             "usuarioId" => $datosCompra['usuarioId'],
             "fecha" => $datosCompra['fecha'],
             "importe" => $datosCompra['importe']
         ]);
 
-        $compraId = $conexion->lastInsertId();
+        $compraId = $Conexion->lastInsertId();
 
         foreach ($detalles as $key => $value) {
             $query = "INSERT INTO items_x_compra VALUES (NULL, :discoId, :compraId, :cantidad)";
 
-            $PDOStatement = $conexion->prepare($query);
+            $PDOStatement = $Conexion->prepare($query);
             $PDOStatement->execute([
             "discoId" => $key,
             "compraId" => $compraId,

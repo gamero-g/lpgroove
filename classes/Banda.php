@@ -17,10 +17,10 @@ class Banda {
      * @return Banda[] Un array de objetos Banda.
      */
     public static function getTodasLasBandas(): array {
-        $conexion = conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "SELECT * FROM bandas";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_CLASS, self::class);
         $PDOStatement->execute();
 
@@ -36,10 +36,10 @@ class Banda {
      */
 
     public static function getBandaPorId(mixed $id): ?Banda {
-        $conexion = conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "SELECT * FROM bandas WHERE id = ?";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_CLASS, self::class);
         $PDOStatement->execute([$id]);
 
@@ -62,10 +62,10 @@ class Banda {
      * 
      */
     public static function insert(string $nombre, string $integrantes, string $pais, int $anio_de_formacion, string $imagen) {
-        $conexion = (new Conexion)->getConexion();
+        $Conexion = (new Conexion)->getConexion();
         $query = 'INSERT INTO bandas (nombre, integrantes, pais, anio_de_formacion, imagen_banda) VALUES (:nombre, :integrantes, :pais, :anio_de_formacion, :imagen)';
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->execute([
             "nombre" => $nombre,
             "integrantes" => $integrantes,
@@ -84,12 +84,12 @@ class Banda {
      * @param string $imagen Es el logo de la banda o artista, que puede ser el anterior como uno nuevo. 
      */
     public function edit(string $nombre, string $integrantes, string $pais, int $anio_de_formacion, string $imagen) {
-        $conexion = (new Conexion)->getConexion();
+        $Conexion = (new Conexion)->getConexion();
         $query = 'UPDATE bandas SET nombre = :nombre, integrantes = :integrantes, pais = :pais, anio_de_formacion = :anio_de_formacion, imagen_banda = :imagen WHERE id = :id';
       
           
     
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
  
         $PDOStatement->execute([
             "nombre" => $nombre,
@@ -105,10 +105,10 @@ class Banda {
      * Función que elimina una banda de la BBDD dependiendo su ID.
      */
     public function remove() {
-        $conexion = (new Conexion)->getConexion();
+        $Conexion = (new Conexion)->getConexion();
         $query = 'DELETE FROM bandas WHERE id = ?';
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->execute([$this->id]);
     }
 

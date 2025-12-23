@@ -9,7 +9,7 @@ class Ventas {
     public static function obtenerMasVendidos(): array {
         $haceTreintaDias = date('Y-m-d', strtotime('-30 days'));
 
-        $conexion = Conexion::getConexion();
+        $Conexion = Conexion::getConexion();
 
         $query = "SELECT compras.fecha, compras.importe, discos.titulo, discos.imagen_portada,
                         SUM(items_x_compra.cantidad) AS cantidad
@@ -21,7 +21,7 @@ class Ventas {
                 ORDER BY cantidad DESC
                 LIMIT 4";
 
-        $stmt = $conexion->prepare($query);
+        $stmt = $Conexion->prepare($query);
         $stmt->execute([$haceTreintaDias]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

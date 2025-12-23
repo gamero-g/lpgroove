@@ -8,8 +8,8 @@ $descuento = Descuento::getDescuentoPorId($descuentoId);
 $discos = [];
 
 if ($descuento && $descuentoId && ctype_digit((string)$descuentoId)) {
-    $conexion = Conexion::getConexion();
-    $stmt = $conexion->prepare("SELECT id FROM discos WHERE descuento_id = ?");
+    $Conexion = Conexion::getConexion();
+    $stmt = $Conexion->prepare("SELECT id FROM discos WHERE descuento_id = ?");
     $stmt->execute([(int)$descuentoId]);
     $ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
 

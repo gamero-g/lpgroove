@@ -55,11 +55,11 @@ class Disco {
 
     public static function obtenerCatalogoCompleto ():array {
 
-        $conexion = Conexion::getConexion();
+        $Conexion = Conexion::getConexion();
 
         $query = "SELECT discos.*, GROUP_CONCAT(discos_x_generos.generos_id) AS generos FROM discos LEFT JOIN discos_x_generos ON discos.id = discos_x_generos.discos_id WHERE discos.stock > 0 GROUP BY (discos.id)";
      
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_ASSOC);
         $PDOStatement->execute();
         $catalogoCompleto = [];
@@ -78,11 +78,11 @@ class Disco {
 
     public static function obtenerCatalogoCompletoCompleto ():array {
 
-        $conexion = Conexion::getConexion();
+        $Conexion = Conexion::getConexion();
 
         $query = "SELECT discos.*, GROUP_CONCAT(discos_x_generos.generos_id) AS generos FROM discos LEFT JOIN discos_x_generos ON discos.id = discos_x_generos.discos_id GROUP BY (discos.id)";
      
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_ASSOC);
         $PDOStatement->execute();
         $catalogoCompleto = [];
@@ -99,14 +99,14 @@ class Disco {
      * @return Disco[] un array de objetos Disco.
      */
     public static function filtrarPorDestacado (): array  {
-        $conexion = Conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "SELECT discos.*, GROUP_CONCAT(discos_x_generos.generos_id) AS generos
                     FROM discos 
                     LEFT JOIN discos_x_generos ON discos.id = discos_x_generos.discos_id 
                     WHERE destacado = ?
                     GROUP BY (discos.id)";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_ASSOC);
         $PDOStatement->execute([1]);
         $catalogoFiltrado = [];
@@ -125,7 +125,7 @@ class Disco {
      * @return Disco[]|array Devuelve un array de objetos disco, o si esa banda no existe, un array vacío.
      */
     public static function filtrarPorBanda(?string $nombreBanda): array {
-    $conexion = Conexion::getConexion();
+    $Conexion = Conexion::getConexion();
         $query = "SELECT discos.*, GROUP_CONCAT(discos_x_generos.generos_id) AS generos 
                 FROM discos 
                 JOIN bandas ON bandas.id = discos.banda_id 
@@ -133,7 +133,7 @@ class Disco {
                 WHERE bandas.nombre = :nombre AND discos.stock > 0
                 GROUP BY discos.id";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_ASSOC);
         $PDOStatement->execute([
             'nombre' => $nombreBanda
@@ -158,10 +158,10 @@ class Disco {
      */
     public static function filtrarPorId(mixed $id):?Disco {
         
-        $conexion = Conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "SELECT discos.*, GROUP_CONCAT(discos_x_generos.generos_id) AS generos FROM discos LEFT JOIN discos_x_generos ON discos.id = discos_x_generos.discos_id WHERE discos.id = ? GROUP BY (discos.id);";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_ASSOC);
         $PDOStatement->execute([$id]);
     
@@ -181,14 +181,14 @@ class Disco {
      * @return array|Disco[] $catalogoFiltrado Retorna el catalogo filtrado por el value que le proporcionaste a la función, si no se encuentra nada, retorna un array vacío. 
      */
     public static function filtrarPorCondicion (?string $condicion): array  {
-        $conexion = Conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "SELECT discos.*, GROUP_CONCAT(discos_x_generos.generos_id) AS generos
                     FROM discos 
                     LEFT JOIN discos_x_generos ON discos.id = discos_x_generos.discos_id 
                     WHERE condicion = :condicion
                     GROUP BY (discos.id)";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_ASSOC);
         $PDOStatement->execute([
             "condicion" => $condicion
@@ -214,14 +214,14 @@ class Disco {
      */
     public static function filtrarPorFechas(int $fechaMin):?array {
         if($fechaMin >= 0 && $fechaMin <= 2030) {
-            $conexion = Conexion::getConexion();
+            $Conexion = Conexion::getConexion();
             $query = "SELECT discos.*, GROUP_CONCAT(discos_x_generos.generos_id) AS generos
                     FROM discos 
                     LEFT JOIN discos_x_generos ON discos.id = discos_x_generos.discos_id 
                     WHERE anio_de_lanzamiento BETWEEN :fechaMin and :fechaMax AND discos.stock > 0
                     GROUP BY (discos.id)";
 
-            $PDOStatement = $conexion->prepare($query);
+            $PDOStatement = $Conexion->prepare($query);
             $PDOStatement->setFetchMode(PDO::FETCH_ASSOC);
             $PDOStatement->execute([
                 "fechaMin" => $fechaMin,
@@ -245,9 +245,9 @@ class Disco {
      * 
      */
     public static function crearFechasParaFiltro():array {
-        $conexion = Conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "SELECT anio_de_lanzamiento FROM discos";
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_ASSOC);
         $PDOStatement->execute();
 
@@ -407,10 +407,10 @@ class Disco {
      * @param string $imagen Es la imagen del disco.
      */
     public static function insert(int $banda_id, mixed $descuento_id, string $titulo, int $cantidad_canciones, string $duracion, int $anio_de_lanzamiento, string $condicion, string $estado, string $rating, float $precio, int $stock, int $unidades, int $destacado, string $descripcion, string $imagen):int {
-        $conexion = (new Conexion())->getConexion();
+        $Conexion = (new Conexion())->getConexion();
         $query = "INSERT INTO discos (banda_id, descuento_id, titulo, cantidad_canciones, duracion, anio_de_lanzamiento, imagen_portada, imagen_vinilo, condicion, estado, rating, precio, stock, unidades, destacado, descripcion) VALUES (:banda_id, :descuento_id, :titulo, :cantidad_canciones, :duracion, :anio_de_lanzamiento, :imagen_portada, :imagen_vinilo, :condicion, :estado, :rating, :precio, :stock, :unidades,:destacado, :descripcion)";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->execute([
             "banda_id" => $banda_id,
             "descuento_id" => $descuento_id,
@@ -430,7 +430,7 @@ class Disco {
             "descripcion" => $descripcion
         ]); 
 
-        return $conexion->lastInsertId();
+        return $Conexion->lastInsertId();
     } 
 
     /** 
@@ -439,9 +439,9 @@ class Disco {
      * @param $generoId Es el ID del género.
      */
     public static function insertDiscoXGenero($discoId, $generoId) {
-        $conexion = (new Conexion())->getConexion();
+        $Conexion = (new Conexion())->getConexion();
         $query = "INSERT INTO discos_x_generos VALUES (NULL, :discos_id, :generos_id)";
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->execute([
             "discos_id" => $discoId,
             "generos_id" => $generoId,
@@ -453,9 +453,9 @@ class Disco {
      * Función que elimina las relaciones entre un disco y sus géneros, en la tabla pivot discos_x_generos.
      */
     public function deleteDiscoXGenero() {
-        $conexion = (new Conexion())->getConexion();
+        $Conexion = (new Conexion())->getConexion();
         $query = "DELETE FROM discos_x_generos WHERE discos_id = :discos_id";
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->execute([
             "discos_id" => $this->id,
         ]);
@@ -479,10 +479,10 @@ class Disco {
      * @param string $imagen Es la imagen del disco.
      */
     public function edit(int $banda_id, mixed $descuento_id, string $titulo, int $cantidad_canciones, string $duracion, int $anio_de_lanzamiento, string $condicion, string $estado, string $rating, float $precio, int $stock, int $unidades, int $destacado, string $descripcion, string $imagen) {
-        $conexion = (new Conexion())->getConexion();
+        $Conexion = (new Conexion())->getConexion();
         $query = "UPDATE discos SET banda_id = :banda_id, descuento_id = :descuento_id, titulo = :titulo, cantidad_canciones = :cantidad_canciones, duracion = :duracion, anio_de_lanzamiento = :anio_de_lanzamiento, imagen_portada = :imagen_portada, imagen_vinilo = :imagen_vinilo, condicion = :condicion, estado = :estado, rating = :rating, precio = :precio, stock = :stock, unidades = :unidades, destacado = :destacado, descripcion = :descripcion WHERE id = :id";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->execute([
             "banda_id" => $banda_id,
             "descuento_id" => $descuento_id,
@@ -509,10 +509,10 @@ class Disco {
      * Función que elimina un disco de la BBDD dependiendo su ID.
      */
     public function remove() {
-        $conexion = (new Conexion)->getConexion();
+        $Conexion = (new Conexion)->getConexion();
         $query = 'DELETE FROM discos WHERE id = ?';
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->execute([$this->id]);
     }
 

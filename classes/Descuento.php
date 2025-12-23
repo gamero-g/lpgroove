@@ -14,10 +14,10 @@ class Descuento {
      * @return Descuento[] $resultadoQuery Un array lleno de objetos Descuento.
      */
     public static function getTodosLosDescuentos():array {
-        $conexion = conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "SELECT * FROM descuentos";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_CLASS, self::class);
         $PDOStatement->execute();
 
@@ -32,10 +32,10 @@ class Descuento {
      * @return ?Descuento Devuelve un objeto descuento, o sino lo encuentra, null.
      */
     public static function getDescuentoPorId(mixed $id): ?Descuento {
-        $conexion = conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "SELECT * FROM descuentos WHERE descuentos.id = ?";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_CLASS, self::class);
         $PDOStatement->execute([$id]);
 
@@ -54,10 +54,10 @@ class Descuento {
      * @param string $evento Es el evento por el cual se celebra el descuento. 
      */
     public static function insert(int $cantidad_descuento, string $fecha_inicio, string $finalizacion, string $evento) {
-        $conexion = conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "INSERT INTO descuentos (cantidad_descuento, fecha_inicio, finalizacion, evento) VALUES (:cantidad_descuento, :fecha_inicio, :finalizacion, :evento)";
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->execute([
             "cantidad_descuento" => $cantidad_descuento,
             "fecha_inicio" => $fecha_inicio,
@@ -75,10 +75,10 @@ class Descuento {
      * @param string $evento Es el evento por el cual se celebra el descuento.
      */
     public function edit(int $cantidad_descuento, string $fecha_inicio, string $finalizacion, string $evento) {
-        $conexion = conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "UPDATE descuentos SET cantidad_descuento = :cantidad_descuento, fecha_inicio = :fecha_inicio, finalizacion = :finalizacion, evento = :evento WHERE id = :id";
         
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->execute([
             "cantidad_descuento" => $cantidad_descuento,
             "fecha_inicio" => $fecha_inicio,
@@ -92,10 +92,10 @@ class Descuento {
      * Función que elimina un descuento de la BBDD dependiendo su ID.
      */
     public function delete() {
-        $conexion = (new Conexion)->getConexion();
+        $Conexion = (new Conexion)->getConexion();
         $query = 'DELETE FROM descuentos WHERE id = ?';
 
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         
         $PDOStatement->execute([$this->id]);
 

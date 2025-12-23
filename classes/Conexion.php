@@ -8,7 +8,7 @@ class Conexion {
     private const DEFAULT_DB_PASS   = "";
     private const DEFAULT_DB_NAME   = "lpg_08_26";
 
-    private static ?PDO $conexion = null;
+    private static ?PDO $Conexion = null;
 
     private static function env(string $key, string $default): string {
         $v = getenv($key);
@@ -30,7 +30,7 @@ class Conexion {
 
         for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
             try {
-                self::$conexion = new PDO($dsn, $user, $pass, [
+                self::$Conexion = new PDO($dsn, $user, $pass, [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 ]);
                 return;
@@ -44,9 +44,9 @@ class Conexion {
     }
 
     public static function getConexion(): PDO {
-        if (self::$conexion === null) {
+        if (self::$Conexion === null) {
             self::conectar();
         }
-        return self::$conexion;
+        return self::$Conexion;
     }
 }

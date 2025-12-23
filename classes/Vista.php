@@ -17,9 +17,9 @@ class Vista{
      * @return Vista devuelve un objeto vista adecuado
      */
     public static function validar_vista(?string $vistaNombre): Vista{
-        $conexion = conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "SELECT * FROM vistas WHERE nombre = ?";
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_CLASS, self::class);
         $PDOStatement->execute([$vistaNombre]);
 

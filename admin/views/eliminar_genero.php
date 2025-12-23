@@ -5,9 +5,9 @@ $genero = Genero::getGeneroPorId($generoId);
 $msg = $_SESSION['flash_error'] ?? null;
 unset($_SESSION['flash_error']);
 
-function getDiscoIdsPorGenero(PDO $conexion, int $generoId): array {
+function getDiscoIdsPorGenero(PDO $Conexion, int $generoId): array {
     try {
-        $stmt = $conexion->prepare("SELECT discos_id FROM discos_x_generos WHERE generos_id = ?");
+        $stmt = $Conexion->prepare("SELECT discos_id FROM discos_x_generos WHERE generos_id = ?");
         $stmt->execute([$generoId]);
         $ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
         return array_map('intval', $ids);
@@ -19,8 +19,8 @@ function getDiscoIdsPorGenero(PDO $conexion, int $generoId): array {
 $discos = [];
 
 if ($genero && $generoId && ctype_digit((string)$generoId)) {
-    $conexion = Conexion::getConexion();
-    $discoIds = getDiscoIdsPorGenero($conexion, (int)$generoId);
+    $Conexion = Conexion::getConexion();
+    $discoIds = getDiscoIdsPorGenero($Conexion, (int)$generoId);
 
     foreach ($discoIds as $id) {
         $d = Disco::filtrarPorId($id);

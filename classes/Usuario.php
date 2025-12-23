@@ -13,9 +13,9 @@ class Usuario{
      * @param string $usuario Es el nombre de usuario
      */
     public static function usuario_x_username(string $usuario): ?Usuario{
-        $conexion = Conexion::getConexion();
+        $Conexion = Conexion::getConexion();
         $query = "SELECT * from usuarios where usuario = ?";
-        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement = $Conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_CLASS, self::class);
         $PDOStatement->execute([$usuario]);
         $rta = $PDOStatement->fetch();

@@ -19,9 +19,9 @@ try {
         exit;
     }
 
-    $conexion = Conexion::getConexion();
+    $Conexion = Conexion::getConexion();
 
-    $stmt = $conexion->prepare("SELECT COUNT(*) FROM discos_x_generos WHERE generos_id = ?");
+    $stmt = $Conexion->prepare("SELECT COUNT(*) FROM discos_x_generos WHERE generos_id = ?");
     $stmt->execute([(int)$generoId]);
     $enUso = (int)$stmt->fetchColumn();
 
@@ -31,16 +31,16 @@ try {
         exit;
     }
 
-    $conexion->beginTransaction();
+    $Conexion->beginTransaction();
 
-    $stmt = $conexion->prepare("DELETE FROM generos WHERE id = ?");
+    $stmt = $Conexion->prepare("DELETE FROM generos WHERE id = ?");
     $stmt->execute([(int)$generoId]);
 
-    $conexion->commit();
+    $Conexion->commit();
 
 } catch (Throwable $error) {
-    if (isset($conexion) && $conexion instanceof PDO && $conexion->inTransaction()) {
-        $conexion->rollBack();
+    if (isset($Conexion) && $Conexion instanceof PDO && $Conexion->inTransaction()) {
+        $Conexion->rollBack();
     }
     $_SESSION['flash_error'] = 'No se pudo eliminar el género.';
     header("Location: ../index.php?seccion=eliminar_genero&id=$generoId&text=generos");
