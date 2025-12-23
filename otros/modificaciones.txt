@@ -1,0 +1,12 @@
+Base de datos:
+    Tabla vistas:
+        Se agregaron todas las vistas que faltaban
+
+
+código:
+    Agregado:
+        Vista 403
+        vista mantenimiento
+
+    Modificado:
+        clase Vistas.php

@@ -1,0 +1,3 @@
+Superadmin - Usuario: Gustavo94 Contraseña: passwordtest
+Admin - Usuario: FAQundo Contraseña: passwordtest
+User - Usuario: Coraline Contraseña: passwordtest
