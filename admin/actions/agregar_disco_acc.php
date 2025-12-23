@@ -31,8 +31,18 @@ $titulo = trim($discoDatos['titulo'] ?? '');
 if ($titulo === '') $errors['titulo'] = 'El título es obligatorio.';
 $discoDatos['titulo'] = $titulo;
 
-if (!isIntStr($discoDatos['cantidad_canciones'] ?? '')) {
+$cantStr = trim($discoDatos['cantidad_canciones'] ?? '');
+
+if (!isIntStr($cantStr)) {
     $errors['cantidad_canciones'] = 'La cantidad de canciones debe ser un número entero.';
+} else {
+    $cant = (int)$cantStr;
+
+    if ($cant < 1 || $cant > 100) {
+        $errors['cantidad_canciones'] = 'La cantidad de canciones debe estar entre 1 y 100.';
+    } else {
+        $discoDatos['cantidad_canciones'] = $cant;
+    }
 }
 
 $duracion = trim($discoDatos['duracion'] ?? '');
