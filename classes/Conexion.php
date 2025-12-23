@@ -1,39 +1,52 @@
-<?php 
-
+<?php
 
 class Conexion {
-    private const DB_SERVER = "127.0.0.1";
-    private const DB_USER = "root";
-    private const DB_PASS = "";
-    private const DB_NAME= "lpg_08_26-6";
-    private const DB_DSN = "mysql:host=" . self::DB_SERVER . ";dbname=" . self::DB_NAME . ";charset=utf8mb4";
+    // Defaults para XAMPP (fallback)
+    private const DEFAULT_DB_SERVER = "127.0.0.1";
+    private const DEFAULT_DB_PORT   = "3306";
+    private const DEFAULT_DB_USER   = "root";
+    private const DEFAULT_DB_PASS   = "";
+    private const DEFAULT_DB_NAME   = "lpg_08_26"; // OJO: que coincida con docker-compose
 
     private static ?PDO $conexion = null;
 
+    private static function env(string $key, string $default): string {
+        $v = getenv($key);
+        return ($v === false || $v === '') ? $default : $v;
+    }
 
-
-    /**
-     * Función estática que genera una conexión a la BBDD, con el fin de sólo hacer una conexión a la misma.
-     * 
-     */
     public static function conectar() {
-        try {
-            self::$conexion = new PDO(self::DB_DSN, self::DB_USER, self::DB_PASS);
-        } catch (Exception $error){
-            die("<p>Hubo un error al intentar conectarse a la Base de Datos de LPGroove</p>");
+        $host = self::env('DB_HOST', self::DEFAULT_DB_SERVER);
+        $port = self::env('DB_PORT', self::DEFAULT_DB_PORT);
+        $user = self::env('DB_USERNAME', self::DEFAULT_DB_USER);
+        $pass = self::env('DB_PASSWORD', self::DEFAULT_DB_PASS);
+        $name = self::env('DB_DATABASE', self::DEFAULT_DB_NAME);
+
+        $dsn = "mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4;connect_timeout=3";
+
+        // Retry para cuando MariaDB todavía está levantando
+        $maxAttempts = 15;
+        $delaySeconds = 1;
+
+        for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
+            try {
+                self::$conexion = new PDO($dsn, $user, $pass, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                ]);
+                return;
+            } catch (PDOException $e) {
+                if ($attempt === $maxAttempts) {
+                    die("<p>Hubo un error al intentar conectarse a la Base de Datos de LPGroove</p>");
+                }
+                sleep($delaySeconds);
+            }
         }
     }
 
-    /**
-     * Función que obtiene la conexión, si no se hizo, llama al método estatico conectar() y la realiza, si ya está hecha, solo la retorna. 
-     * 
-     * @return PDO Un objeto PDO que genere la conexión con la BBDD
-     */
-    public static function getConexion():PDO {
-        if(self::$conexion === null) {
-            self::conectar();    
+    public static function getConexion(): PDO {
+        if (self::$conexion === null) {
+            self::conectar();
         }
         return self::$conexion;
     }
-
 }
