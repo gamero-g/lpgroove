@@ -332,10 +332,10 @@ class Disco {
     /** 
      * Funcion que obtiene el precio de un producto y lo fomatea.
      * 
-     * @param int $precio Es el precio del producto.
+     * @param float $precio Es el precio del producto.
      * @return string Retorna el precio del producto fromateado, en forma de string.
      */
-    public static function formatearPrecio(int $precio):string {
+    public static function formatearPrecio(float $precio):string {
         return number_format($precio, 0, '', '.');
     }
 
