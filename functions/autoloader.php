@@ -8,7 +8,7 @@ function autoloaderClasses($nClase){
     if(file_exists($pathClase)){
         require_once $pathClase;
     }else{
-        die("La clase $nClase no pudo ser accedida. ¿Existe?");
+        die("Autoloader buscó: $pathClase (clase: $nClase) ¿Existe?");
     };
 }
 
