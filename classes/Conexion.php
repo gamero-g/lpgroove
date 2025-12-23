@@ -6,7 +6,7 @@ class Conexion {
     private const DEFAULT_DB_PORT   = "3306";
     private const DEFAULT_DB_USER   = "root";
     private const DEFAULT_DB_PASS   = "";
-    private const DEFAULT_DB_NAME   = "lpg_08_26"; // OJO: que coincida con docker-compose
+    private const DEFAULT_DB_NAME   = "lpg_08_26";
 
     private static ?PDO $conexion = null;
 

@@ -1,6 +1,6 @@
 services:
   web:
-    image: ghcr.io/TU_USUARIO/TU_REPO:latest
+    image: ghcr.io/gamero-g/lpgroove:latest
     build: .
     container_name: lpgroove-web
     depends_on:
